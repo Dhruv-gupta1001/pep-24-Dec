@@ -1,0 +1,78 @@
+import java.io.*;
+import java.util.*;
+
+public class Main{
+  
+
+public static void main(String[] args) throws Exception {
+    BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
+    int n = Integer.parseInt(br.readLine());
+    int[] arr = new int[n];
+    for(int i = 0; i < n; i++){
+       arr[i] = Integer.parseInt(br.readLine());
+    }
+
+    int[] li=new int[n];
+    int[] ri=new int[n];
+    
+    Stack<Integer> st=new Stack<>();
+    
+    // left small index
+    li[0]=-1;
+    st.push(0);
+    for(int i=1;i<n;i++){
+        while(!st.empty() && arr[i]<=arr[st.peek()]){
+            st.pop();
+        } 
+        if(st.empty()){
+            li[i]=-1;
+        }else{
+            li[i]=st.peek();
+        }
+        st.push(i);
+    }
+    
+    st.clear();
+    
+    //right small index
+    ri[n-1]=n;
+    st.push(n-1);
+    
+    for(int i=n-2;i>=0;i--){
+        while(!st.empty() && arr[i]<=arr[st.peek()]){
+            st.pop();
+            
+        }
+        if(st.empty()){
+            ri[i]=n;
+        }else{
+            ri[i]=st.peek();
+        }
+        st.push(i);
+    }
+    
+    // maximum area
+    int max=0;
+    int area=0;
+    for(int i=0;i<n;i++){
+        int w=ri[i]-li[i]-1;
+        int h=arr[i];
+        area= h*w;
+        // System.out.println(area);
+        if(max<area){
+            max=area;
+        }
+    }
+    
+    System.out.print(max); 
+    
+    // for(int x: li){
+    //     System.out.print(x+" ");
+    // }
+    // System.out.println();
+    // for(int x: ri){
+    //     System.out.print(x+" ");
+    // }
+ }
+}
